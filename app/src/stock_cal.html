@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>股票补仓成本计算器</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #2c3e50;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #34495e;
+        }
+
+        input[type="number"], input[type="text"] {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus, input[type="text"]:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        #result {
+            background: #e8f4fc;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        #clearHistory {
+            background: #e74c3c;
+        }
+
+        #clearHistory:hover {
+            background: #c0392b;
+        }
+
+        .empty-history {
+            text-align: center;
+            color: #7f8c8d;
+            padding: 30px;
+            font-style: italic;
+        }
+
+        .cost-result {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .cost-item {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .tax-inclusive {
+            background-color: #e8f4fc;
+        }
+
+        .tax-exclusive {
+            background-color: #fff8e1;
+        }
+        
+        .total-cost {
+            background-color: #f3e5f5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>📈 股票补仓成本计算器</h2>
+        <form id="costForm" onsubmit="event.preventDefault(); calculate();">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="old_number">原持股数量:</label>
+                    <input type="number" id="old_number" value="800" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="old_price">原持股价格:</label>
+                    <input type="number" step="0.01" id="old_price" value="3.68" min="0">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="now_price">新购股价格:</label>
+                    <input type="number" step="0.01" id="now_price" value="3.48" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="now_num">新购股数量:</label>
+                    <input type="number" id="now_num" value="800" min="0">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <button type="button" onclick="calculate()">计算成本</button>
+                </div>
+            </div>
+        </form>
+
+        <div id="result">请输入数据并点击计算</div>
+    </div>
+
+    <div class="container">
+        <div class="actions">
+            <h3>📋 计算历史</h3>
+            <button id="clearHistory" onclick="clearHistory()">清空历史</button>
+        </div>
+
+        <table id="historyTable">
+            <thead>
+                <tr>
+                    <th>时间</th>
+                    <th>原持股(数量@价格)</th>
+                    <th>新购股(数量@价格)</th>
+                    <th>不含税成本</th>
+                    <th>含税成本</th>
+                    <th>新购总价(不含税)</th>
+                    <th>新购总价(含税)</th>
+                </tr>
+            </thead>
+            <tbody id="historyBody">
+                <tr>
+                    <td colspan="7" class="empty-history">暂无计算历史</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // 存储历史记录
+        let calculationHistory = [];
+
+        function calculate() {
+            // 获取表单数据
+            const old_number = parseInt(document.getElementById('old_number').value) || 0;
+            const old_price = parseFloat(document.getElementById('old_price').value) || 0;
+            const now_price = parseFloat(document.getElementById('now_price').value) || 0;
+            const now_num = parseInt(document.getElementById('now_num').value) || 0;
+
+            // 分别计算含税和不含税成本
+            const taxExclusiveResult = calculateCost(old_number, old_price, now_price, now_num, false);
+            const taxInclusiveResult = calculateCost(old_number, old_price, now_price, now_num, true);
+            
+            // 计算新增总价
+            const newTotalExclusive = now_price * now_num;
+            const newTotalInclusive = getCost(now_price, now_num, true);
+
+            // 显示结果
+            document.getElementById('result').innerHTML = `
+                <div class="cost-result">
+                    <div class="cost-item tax-exclusive">
+                        <div>不含税成本</div>
+                        <div style="font-size: 24px; font-weight: bold; color: #ff9800;">${taxExclusiveResult}</div>
+                    </div>
+                    <div class="cost-item tax-inclusive">
+                        <div>含税成本</div>
+                        <div style="font-size: 24px; font-weight: bold; color: #3498db;">${taxInclusiveResult}</div>
+                    </div>
+                    <div class="cost-item total-cost">
+                        <div>新增总价(不含税)</div>
+                        <div style="font-size: 24px; font-weight: bold; color: #9c27b0;">${newTotalExclusive.toFixed(2)}</div>
+                    </div>
+                </div>
+            `;
+
+            // 保存到历史记录
+            const historyItem = {
+                old_number,
+                old_price,
+                now_price,
+                now_num,
+                tax_exclusive: taxExclusiveResult,
+                tax_inclusive: taxInclusiveResult,
+                new_total_exclusive: newTotalExclusive,
+                new_total_inclusive: newTotalInclusive,
+                timestamp: new Date().toLocaleString()
+            };
+
+            calculationHistory.unshift(historyItem); // 添加到历史记录开头
+            updateHistory(); // 更新历史记录显示
+        }
+
+        // 前端实现 `calculateCost` 逻辑
+        function calculateCost(old_number, old_price, now_price, now_num, contain_tax) {
+            const total_cost = getCost(old_price, old_number, contain_tax) +
+                              getCost(now_price, now_num, contain_tax);
+            const total_number = old_number + now_num;
+            if (total_number === 0) return 0;
+            const avg = Math.round((total_cost / total_number) * 1000000) / 1000000;
+            return avg;
+        }
+
+        // 前端实现 `getCost` 逻辑
+        function getCost(price, number, contain_tax) {
+            let total = price * number;
+            if (contain_tax) {
+                if (total < 50000) {
+                    total += 5;
+                } else {
+                    total = total * 1.0001;
+                }
+            }
+            return total;
+        }
+
+        // 更新历史记录显示
+        function updateHistory() {
+            const historyBody = document.getElementById('historyBody');
+            if (calculationHistory.length === 0) {
+                historyBody.innerHTML = '<tr><td colspan="7" class="empty-history">暂无计算历史</td></tr>';
+                return;
+            }
+
+            historyBody.innerHTML = calculationHistory.map(item => `
+                <tr>
+                    <td>${item.timestamp}</td>
+                    <td>${item.old_number} @ ${item.old_price}</td>
+                    <td>${item.now_num} @ ${item.now_price}</td>
+                    <td>${item.tax_exclusive}</td>
+                    <td>${item.tax_inclusive}</td>
+                    <td>${item.new_total_exclusive.toFixed(2)}</td>
+                    <td>${item.new_total_inclusive.toFixed(2)}</td>
+                </tr>
+            `).join('');
+        }
+
+        // 清空历史记录
+        function clearHistory() {
+            if (confirm('确定要清空所有计算历史吗？')) {
+                calculationHistory = [];
+                updateHistory();
+            }
+        }
+    </script>
+</body>
+</html>

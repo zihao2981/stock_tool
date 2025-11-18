@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 基础颜色 -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- 成熟稳重配色方案 -->
+    <color name="primary_dark">#1a1a1a</color>
+    <color name="secondary_dark">#2d2d2d</color>
+    <color name="accent_gold">#d4af37</color>
+    <color name="accent_silver">#c0c0c0</color>
+    <color name="text_primary">#e0e0e0</color>
+    <color name="text_secondary">#b0b0b0</color>
+    <color name="background_dark">#121212</color>
+    <color name="surface_dark">#1e1e1e</color>
+    <color name="result_gold">#d4af37</color>
+    <color name="result_silver">#a8a8a8</color>
+    <color name="result_bronze">#cd7f32</color>
+</resources>
