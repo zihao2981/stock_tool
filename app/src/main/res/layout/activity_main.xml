@@ -12,210 +12,121 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="26dp">
+        android:padding="24dp">
 
-        <!-- 计算结果 -->
-
+        <!-- 门户标题 -->
         <TextView
-            android:id="@+id/newTotalResult"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="新增总价(不含税): ¥0.00"
-            android:textColor="@color/text_primary"
-            android:textSize="18sp"
+            android:text="📊 股票工具集"
+            android:textSize="28sp"
             android:textStyle="bold"
-            android:gravity="center"
-            android:padding="8dp"
-            android:layout_marginBottom="8dp" />
+            android:textColor="@color/accent_gold"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="40dp" />
 
-        <LinearLayout
-            android:id="@+id/resultLayout"
+        <!-- 功能模块网格 -->
+        <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="18dp"
-            >
+            android:columnCount="2"
+            android:rowCount="2"
+            android:useDefaultMargins="true">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="@string/tax_exclusive_label"
-                    android:textSize="16sp"
-                    android:textColor="#ff9800"
-                    android:gravity="center"
-                    android:background="#fff8e1"
-                    />
-
-                <TextView
-                    android:id="@+id/taxExclusiveResult"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:text="¥0.00"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="#ff9800"
-                    android:gravity="center"
-                    android:background="#fff8e1"
-                    android:padding="6dp" />
-
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="@string/tax_inclusive_label"
-                    android:textSize="16sp"
-                    android:textColor="#3498db"
-                    android:gravity="center"
-                    android:background="#e8f4fc"
-                    />
-
-                <TextView
-                    android:id="@+id/taxInclusiveResult"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:text="¥0.00"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="#3498db"
-                    android:gravity="center"
-                    android:background="#e8f4fc"
-                    android:padding="6dp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/calculateButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/calculate_button"
-            android:textSize="16sp"
-            android:textColor="@color/primary_dark"
-            android:backgroundTint="@color/accent_gold"
-            android:layout_marginBottom="25dp"
-            android:padding="6dp"
-            android:letterSpacing="0.2" />
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="20dp">
-
-            <com.google.android.material.textfield.TextInputLayout
+            <!-- 股票补仓成本计算器卡片 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/averagingCostCard"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"
-                android:hint="@string/new_number_hint"
-                android:textColorHint="@color/text_secondary"
-                app:boxBackgroundColor="@color/surface_dark"
-                app:boxStrokeColor="@color/accent_silver"
-                app:hintTextColor="@color/accent_silver">
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/surface_dark">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/newNumberInput"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_primary"
-                    android:background="@null" />
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:gravity="center">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📈"
+                        android:textSize="32sp"
+                        android:layout_marginBottom="12dp" />
 
-            <com.google.android.material.textfield.TextInputLayout
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="补仓计算器"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"
+                        android:gravity="center"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="计算股票补仓后的平均成本"
+                        android:textSize="12sp"
+                        android:textColor="@color/text_secondary"
+                        android:gravity="center" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- 预留位置给新功能 -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                android:hint="@string/new_price_hint"
-                android:textColorHint="@color/text_secondary"
-                app:boxBackgroundColor="@color/surface_dark"
-                app:boxStrokeColor="@color/accent_silver"
-                app:hintTextColor="@color/accent_silver">
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/secondary_dark">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/newPriceInput"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_primary"
-                    android:background="@null" />
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:gravity="center">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🔄"
+                        android:textSize="32sp"
+                        android:layout_marginBottom="12dp" />
 
-        </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="即将推出"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_secondary"
+                        android:gravity="center"
+                        android:layout_marginBottom="8dp" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="更多功能正在开发中"
+                        android:textSize="12sp"
+                        android:textColor="@color/text_secondary"
+                        android:gravity="center" />
 
+                </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="20dp">
+            </androidx.cardview.widget.CardView>
 
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"
-                android:hint="@string/old_number_hint"
-                android:textColorHint="@color/text_secondary"
-                app:boxBackgroundColor="@color/surface_dark"
-                app:boxStrokeColor="@color/accent_silver"
-                app:hintTextColor="@color/accent_silver">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/oldNumberInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_primary"
-                    android:background="@null" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                android:hint="@string/old_price_hint"
-                android:textColorHint="@color/text_secondary"
-                app:boxBackgroundColor="@color/surface_dark"
-                app:boxStrokeColor="@color/accent_silver"
-                app:hintTextColor="@color/accent_silver">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/oldPriceInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_primary"
-                    android:background="@null" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
-
-
+        </GridLayout>
 
     </LinearLayout>
 
