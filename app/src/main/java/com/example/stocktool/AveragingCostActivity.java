@@ -1,5 +1,6 @@
 package com.example.stocktool;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.MenuItem;
@@ -14,6 +15,12 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class AveragingCostActivity extends AppCompatActivity {
 
+    private static final String PREFS_NAME = "AveragingCostPrefs";
+    private static final String KEY_OLD_NUMBER = "old_number";
+    private static final String KEY_OLD_PRICE = "old_price";
+    
+    private SharedPreferences sharedPreferences;
+
     private TextInputEditText oldNumberInput, oldPriceInput, newNumberInput, newPriceInput;
     private Button calculateButton;
     private LinearLayout resultLayout;
@@ -23,12 +30,14 @@ public class AveragingCostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_averaging_cost);
-   // 启用ActionBar返回按钮
+        // 启用ActionBar返回按钮
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         initViews();
         setupClickListener();
+        loadSavedData();
     }
 
        // 处理ActionBar返回按钮点击事件
@@ -61,6 +70,19 @@ public class AveragingCostActivity extends AppCompatActivity {
             }
         });
     }
+    
+    private void loadSavedData() {
+        String savedOldNumber = sharedPreferences.getString(KEY_OLD_NUMBER, "");
+        String savedOldPrice = sharedPreferences.getString(KEY_OLD_PRICE, "");
+        
+        if (!savedOldNumber.isEmpty()) {
+            oldNumberInput.setText(savedOldNumber);
+        }
+        
+        if (!savedOldPrice.isEmpty()) {
+            oldPriceInput.setText(savedOldPrice);
+        }
+    }
 
     private void calculateAveragingCost() {
         try {
@@ -88,6 +110,12 @@ public class AveragingCostActivity extends AppCompatActivity {
                 Toast.makeText(this, "所有数值必须为正数", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            // 保存数据到 SharedPreferences
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(KEY_OLD_NUMBER, oldNumberStr);
+            editor.putString(KEY_OLD_PRICE, oldPriceStr);
+            editor.apply();
 
             // 计算补仓成本
             double oldTotal = oldNumber * oldPrice;

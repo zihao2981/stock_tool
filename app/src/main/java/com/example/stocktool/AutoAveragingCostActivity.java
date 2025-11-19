@@ -1,5 +1,6 @@
 package com.example.stocktool;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,15 @@ import java.util.List;
 
 public class AutoAveragingCostActivity extends AppCompatActivity {
 
+    private static final String PREFS_NAME = "AutoAveragingCostPrefs";
+    private static final String KEY_OLD_PRICE = "old_price";
+    private static final String KEY_OLD_QUANTITY = "old_quantity";
+    private static final String KEY_START_QUANTITY = "start_quantity";
+    private static final String KEY_END_QUANTITY = "end_quantity";
+    private static final String KEY_INTERVAL = "interval";
+    
+    private SharedPreferences sharedPreferences;
+
     private TextInputEditText oldPriceInput, oldQuantityInput;
     private android.widget.LinearLayout pricesContainer;
     private android.widget.Button addPriceButton;
@@ -39,6 +49,9 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auto_averaging_cost);
         
+        // 初始化 SharedPreferences
+        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        
         // 启用ActionBar返回按钮
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -47,6 +60,9 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
 
         initViews();
         setupClickListener();
+        
+        // 加载保存的数据
+        loadSavedData();
     }
 
     private void initViews() {
@@ -99,6 +115,36 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
                 addPriceInput();
             }
         });
+    }
+    
+    private void loadSavedData() {
+        // 从 SharedPreferences 中获取保存的数据
+        String savedOldPrice = sharedPreferences.getString(KEY_OLD_PRICE, "");
+        String savedOldQuantity = sharedPreferences.getString(KEY_OLD_QUANTITY, "");
+        String savedStartQuantity = sharedPreferences.getString(KEY_START_QUANTITY, "");
+        String savedEndQuantity = sharedPreferences.getString(KEY_END_QUANTITY, "");
+        String savedInterval = sharedPreferences.getString(KEY_INTERVAL, "");
+        
+        // 将数据填充到对应的输入框中
+        if (!savedOldPrice.isEmpty()) {
+            oldPriceInput.setText(savedOldPrice);
+        }
+        
+        if (!savedOldQuantity.isEmpty()) {
+            oldQuantityInput.setText(savedOldQuantity);
+        }
+        
+        if (!savedStartQuantity.isEmpty()) {
+            startQuantityInput.setText(savedStartQuantity);
+        }
+        
+        if (!savedEndQuantity.isEmpty()) {
+            endQuantityInput.setText(savedEndQuantity);
+        }
+        
+        if (!savedInterval.isEmpty()) {
+            intervalInput.setText(savedInterval);
+        }
     }
     
     // 处理ActionBar返回按钮点击事件
@@ -181,7 +227,7 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
             
             // 创建合并后的笛卡尔积表头
             createCombinedCartesianTableHeader(validPrices);
-            
+
             // 计算原有持仓总价值
             double oldTotalValue = oldPrice * oldQuantity;
             int totalQuantity = oldQuantity;
@@ -191,10 +237,15 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
                 // 创建合并后的表格行
                 TableRow row = new TableRow(this);
                 
+                // 移除TableRow的边框
+                // row.setBackgroundColor(ContextCompat.getColor(this, R.color.table_border));
+                
                 // 设置TableRow的布局参数
                 TableRow.LayoutParams rowParams = new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT);
+                // 移除外边距以去除边框效果
+                // rowParams.setMargins(2, 2, 2, 2);
                 row.setLayoutParams(rowParams);
                 
                 // 添加数量列
@@ -205,6 +256,12 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
                 quantityText.setMinimumWidth(80);
                 // 设置字体颜色为白色
                 quantityText.setTextColor(ContextCompat.getColor(this, R.color.text_white));
+                // 添加内边距以增强边框效果
+                android.graphics.drawable.GradientDrawable quantityBackground = new android.graphics.drawable.GradientDrawable();
+                quantityBackground.setColor(ContextCompat.getColor(this, R.color.table_cell_background));
+                // quantityBackground.setStroke(2, ContextCompat.getColor(this, R.color.table_border)); // 移除边框宽度和颜色
+                quantityBackground.setCornerRadius(4f); // 保留圆角
+                quantityText.setBackground(quantityBackground);
                 row.addView(quantityText);
                 
                 // 计算每个价格对应的平均成本
@@ -218,15 +275,31 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
                     
                     // 计算不含佣金的平均成本
                     double avgCostWithoutCommission = currentTotalValue / currentTotalQuantity;
-                    
-                    // 计算含佣金的平均成本（假设佣金为万分之三）
-                    double commission = newTotalValue * 0.0003;
-                    double avgCostWithCommission = (currentTotalValue + commission) / currentTotalQuantity;
+                    if(currentTotalValue > 50000){
+                        currentTotalValue += currentTotalValue * 1.0005 ;
+                    }else {
+                        currentTotalValue += 5;
+                    }
+                    double avgCostWithCommission = currentTotalValue / currentTotalQuantity;
                     
                     // 创建包含两个结果的垂直线性布局
                     android.widget.LinearLayout cellLayout = new android.widget.LinearLayout(this);
                     cellLayout.setOrientation(android.widget.LinearLayout.VERTICAL);
                     cellLayout.setPadding(8, 8, 8, 8);
+                    // 为单元格添加背景（移除边框）
+                    android.graphics.drawable.GradientDrawable cellBackground = new android.graphics.drawable.GradientDrawable();
+                    // 检查计算结果是否有效
+                    if (Double.isNaN(avgCostWithoutCommission) || Double.isInfinite(avgCostWithoutCommission) ||
+                        Double.isNaN(avgCostWithCommission) || Double.isInfinite(avgCostWithCommission)) {
+                        // 如果结果无效，则使用透明背景
+                        cellBackground.setColor(ContextCompat.getColor(this, R.color.transparent));
+                    } else {
+                        // 否则使用默认背景
+                        cellBackground.setColor(ContextCompat.getColor(this, R.color.table_cell_background));
+                    }
+                    // cellBackground.setStroke(2, ContextCompat.getColor(this, R.color.table_border)); // 移除边框宽度和颜色
+                    cellBackground.setCornerRadius(4f); // 保留圆角
+                    cellLayout.setBackground(cellBackground);
                     
                     // 上半部分：不含佣金结果
                     TextView costTextWithout = new TextView(this);
@@ -256,6 +329,15 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
             
             // 更新表格高亮状态
             updateTableHighlight();
+            
+            // 保存数据到 SharedPreferences
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(KEY_OLD_PRICE, oldPriceStr);
+            editor.putString(KEY_OLD_QUANTITY, oldQuantityStr);
+            editor.putString(KEY_START_QUANTITY, startQuantityStr);
+            editor.putString(KEY_END_QUANTITY, endQuantityStr);
+            editor.putString(KEY_INTERVAL, intervalStr);
+            editor.apply();
             
         } catch (NumberFormatException e) {
             Toast.makeText(this, "请输入有效的数字: " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -376,17 +458,28 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
         // 添加标题行
         TableRow titleRow = new TableRow(this);
         
+        // 移除TableRow的边框
+        // titleRow.setBackgroundColor(ContextCompat.getColor(this, R.color.table_border));
+        
         // 设置TableRow的布局参数
         TableRow.LayoutParams rowParams = new TableRow.LayoutParams(
             TableRow.LayoutParams.MATCH_PARENT,
             TableRow.LayoutParams.WRAP_CONTENT);
+        // 移除外边距以去除边框效果
+        // rowParams.setMargins(2, 2, 2, 2);
         titleRow.setLayoutParams(rowParams);
         
         TextView titleText = new TextView(this);
-        titleText.setText("成本计算结果（不含佣金/含佣金）");
+        titleText.setText("计算结果");
         titleText.setTextSize(18);
         titleText.setTextColor(ContextCompat.getColor(this, R.color.text_white));
         titleText.setPadding(16, 16, 16, 16);
+        // 移除标题文本的边框效果
+        android.graphics.drawable.GradientDrawable titleBackground = new android.graphics.drawable.GradientDrawable();
+        titleBackground.setColor(ContextCompat.getColor(this, R.color.table_cell_background));
+        // titleBackground.setStroke(2, ContextCompat.getColor(this, R.color.table_border)); // 移除边框宽度和颜色
+        titleBackground.setCornerRadius(4f); // 保留圆角
+        titleText.setBackground(titleBackground);
         titleRow.addView(titleText);
         
         // 占满整行
@@ -398,7 +491,16 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
         
         // 添加表头行
         TableRow headerRow = new TableRow(this);
-        headerRow.setLayoutParams(rowParams);
+        // 移除TableRow的边框
+        // headerRow.setBackgroundColor(ContextCompat.getColor(this, R.color.table_border));
+        
+        // 设置TableRow的布局参数
+        TableRow.LayoutParams headerRowParams = new TableRow.LayoutParams(
+            TableRow.LayoutParams.MATCH_PARENT,
+            TableRow.LayoutParams.WRAP_CONTENT);
+        // 移除外边距以去除边框效果
+        // headerRowParams.setMargins(2, 2, 2, 2);
+        headerRow.setLayoutParams(headerRowParams);
         
         // 第一列是数量列
         TextView quantityHeader = new TextView(this);
@@ -411,6 +513,12 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
         quantityHeader.setTypeface(null, android.graphics.Typeface.BOLD);
         // 设置字体颜色为白色
         quantityHeader.setTextColor(ContextCompat.getColor(this, R.color.text_white));
+        // 为数量列标题添加背景以创建边框效果
+        android.graphics.drawable.GradientDrawable quantityHeaderBackground = new android.graphics.drawable.GradientDrawable();
+        quantityHeaderBackground.setColor(ContextCompat.getColor(this, R.color.table_cell_background));
+        // quantityHeaderBackground.setStroke(2, ContextCompat.getColor(this, R.color.table_border)); // 移除边框宽度和颜色
+        quantityHeaderBackground.setCornerRadius(4f); // 保留圆角
+        quantityHeader.setBackground(quantityHeaderBackground);
         headerRow.addView(quantityHeader);
         
         // 为每个价格添加列标题
@@ -426,6 +534,12 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
             priceHeader.setTypeface(null, android.graphics.Typeface.BOLD);
             // 设置字体颜色为白色
             priceHeader.setTextColor(ContextCompat.getColor(this, R.color.text_white));
+            // 为价格列标题添加背景以创建边框效果
+            android.graphics.drawable.GradientDrawable priceHeaderBackground = new android.graphics.drawable.GradientDrawable();
+            priceHeaderBackground.setColor(ContextCompat.getColor(this, R.color.table_cell_background));
+            // priceHeaderBackground.setStroke(2, ContextCompat.getColor(this, R.color.table_border)); // 移除边框宽度和颜色
+            priceHeaderBackground.setCornerRadius(4f); // 保留圆角
+            priceHeader.setBackground(priceHeaderBackground);
             headerRow.addView(priceHeader);
         }
         

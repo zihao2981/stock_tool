@@ -14,7 +14,7 @@
     <!-- 成熟稳重配色方案 -->
     <color name="secondary_dark">#4C4945</color>
     <color name="accent_gold">#2E2205</color>
-    <color name="accent_silver">#BDABAB</color>
+    <color name="accent_silver">#00000000</color>
     <color name="text_primary">#e0e0e0</color>
     <color name="text_secondary">#FBFBFB</color>
     <color name="surface_dark">#856602</color>
@@ -24,4 +24,7 @@
     <color name="tax_exclusive_background">#fff8e1</color> <!-- 税前价格背景颜色 -->
     <color name="tax_inclusive_text">#3498db</color> <!-- 税后价格文本颜色 -->
     <color name="tax_inclusive_background">#e8f4fc</color> <!-- 税后价格背景颜色 -->
+    <color name="table_border">#BDABAB</color> <!-- 表格边框颜色 -->
+    <color name="table_cell_background">#656565</color> <!-- 表格单元格背景色 -->
+    <color name="transparent">#00000000</color> <!-- 透明色 -->
 </resources>

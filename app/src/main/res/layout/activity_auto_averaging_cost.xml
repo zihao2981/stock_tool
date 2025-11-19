@@ -26,21 +26,12 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="原有持仓信息"
-                        android:textColor="@color/text_white"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="12dp" />
-
                 <!-- 新增水平布局包裹两个输入框 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:spacing="12dp">
+                    android:spacing="18dp">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp"
@@ -89,80 +80,36 @@
             app:strokeColor="@color/accent_silver"
             app:strokeWidth="1dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="新购数量范围设置"
+                    android:textColor="@color/text_white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- 水平布局包裹三个输入框，平均分配宽度 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:orientation="horizontal"
+                    android:spacing="12dp"> <!-- 输入框之间的间距 -->
 
-                    <TextView
-                        android:layout_width="match_parent"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="新购价格列表"
-                        android:textColor="@color/text_white"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="12dp" />
-
-                    <!-- 动态价格输入框容器 -->
-                    <LinearLayout
-                        android:id="@+id/pricesContainer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginBottom="12dp" />
-
-                    <!-- 添加价格按钮 -->
-                    <Button
-                        android:id="@+id/addPriceButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/button_background"
-                        android:text="添加新购价格"
-                        android:textColor="@color/text_white"
-                        android:textSize="16sp" />
-                </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/button_background"
-            app:cardCornerRadius="8dp"
-            app:strokeColor="@color/accent_silver"
-            app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="新购数量范围设置"
-                        android:textColor="@color/text_white"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="12dp" />
-
-                    <!-- 水平布局包裹三个输入框，平均分配宽度 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:spacing="12dp"> <!-- 输入框之间的间距 -->
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:hint="起始数量"
-                            app:boxBackgroundColor="@color/button_background"
-                            app:boxStrokeColor="@color/accent_silver"
-                            android:textColorHint="@color/text_secondary">
+                        android:layout_weight="1"
+                        android:hint="起始数量"
+                        app:boxBackgroundColor="@color/button_background"
+                        app:boxStrokeColor="@color/accent_silver"
+                        android:textColorHint="@color/text_secondary">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/startQuantityInput"
@@ -209,24 +156,61 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="@color/button_background"
+            app:cardCornerRadius="8dp"
+            app:strokeColor="@color/accent_silver"
+            app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="6dp">
+
+                    <!-- 动态价格输入框容器 -->
+                    <LinearLayout
+                        android:id="@+id/pricesContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="3dp" />
+
+                    <!-- 添加价格按钮 -->
+                    <Button
+                        android:id="@+id/addPriceButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/button_background"
+                        android:text="添加新购价格"
+                        android:textColor="@color/text_white"
+                        android:textSize="16sp" />
+                </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+
+
         <!-- 计算按钮 -->
         <Button
             android:id="@+id/calculateButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="6dp"
             android:background="@color/button_background"
             android:text="计算成本"
             android:textColor="@color/text_white"
             android:textSize="16sp" />
-
         <!-- 合并后的结果显示区域 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="6dp">
 
             <Button
                         android:id="@+id/btnHighlightWithoutCommission"
