@@ -21,7 +21,9 @@
         <activity
             android:name=".AveragingCostActivity"
             android:exported="false" />
-        
+        <activity
+    android:name=".AutoAveragingCostActivity"
+    android:exported="false" />
     </application>
 
 </manifest>

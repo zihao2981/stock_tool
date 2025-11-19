@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@color/background_dark"
+    android:background="@color/grey_background"
     tools:context=".AveragingCostActivity">
 
     <LinearLayout
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="新增总价(不含税): ¥0.00"
-            android:textColor="@color/text_primary"
+            android:textColor="@color/text_white"
             android:textSize="18sp"
             android:textStyle="bold"
             android:gravity="center"
@@ -47,9 +47,9 @@
                     android:layout_weight="1"
                     android:text="@string/tax_exclusive_label"
                     android:textSize="16sp"
-                    android:textColor="#ff9800"
+                    android:textColor="@color/tax_exclusive_text"
                     android:gravity="center"
-                    android:background="#fff8e1"
+                    android:background="@color/button_background"
                     />
 
                 <TextView
@@ -60,9 +60,9 @@
                     android:text="¥0.00"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="#ff9800"
+                    android:textColor="@color/text_white"
                     android:gravity="center"
-                    android:background="#fff8e1"
+                    android:background="@color/button_background"
                     android:padding="6dp" />
 
 
@@ -72,9 +72,9 @@
                     android:layout_weight="1"
                     android:text="@string/tax_inclusive_label"
                     android:textSize="16sp"
-                    android:textColor="#3498db"
+                    android:textColor="@color/tax_exclusive_text"
                     android:gravity="center"
-                    android:background="#e8f4fc"
+                    android:background="@color/button_background"
                     />
 
                 <TextView
@@ -85,9 +85,9 @@
                     android:text="¥0.00"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="#3498db"
+                    android:textColor="@color/text_white"
                     android:gravity="center"
-                    android:background="#e8f4fc"
+                    android:background="@color/button_background"
                     android:padding="6dp" />
 
             </LinearLayout>
@@ -100,8 +100,8 @@
             android:layout_height="wrap_content"
             android:text="@string/calculate_button"
             android:textSize="16sp"
-            android:textColor="@color/primary_dark"
-            android:backgroundTint="@color/accent_gold"
+            android:textColor="@color/text_white"
+            android:backgroundTint="@color/button_background"
             android:layout_marginBottom="25dp"
             android:padding="6dp"
             android:letterSpacing="0.2" />
@@ -119,10 +119,8 @@
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
                 android:hint="@string/new_number_hint"
-                android:textColorHint="@color/text_secondary"
-                app:boxBackgroundColor="@color/surface_dark"
-                app:boxStrokeColor="@color/accent_silver"
-                app:hintTextColor="@color/accent_silver">
+                android:textColorHint="@color/tax_exclusive_text"
+                app:boxBackgroundColor="@color/button_background">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/newNumberInput"
@@ -130,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:textSize="16sp"
-                    android:textColor="@color/text_primary"
+                    android:textColor="@color/text_white"
                     android:background="@null" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -141,10 +139,8 @@
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
                 android:hint="@string/new_price_hint"
-                android:textColorHint="@color/text_secondary"
-                app:boxBackgroundColor="@color/surface_dark"
-                app:boxStrokeColor="@color/accent_silver"
-                app:hintTextColor="@color/accent_silver">
+                android:textColorHint="@color/tax_exclusive_text"
+                app:boxBackgroundColor="@color/button_background">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/newPriceInput"
@@ -152,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
                     android:textSize="16sp"
-                    android:textColor="@color/text_primary"
+                    android:textColor="@color/text_white"
                     android:background="@null" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -175,10 +171,8 @@
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
                 android:hint="@string/old_number_hint"
-                android:textColorHint="@color/text_secondary"
-                app:boxBackgroundColor="@color/surface_dark"
-                app:boxStrokeColor="@color/accent_silver"
-                app:hintTextColor="@color/accent_silver">
+                android:textColorHint="@color/tax_exclusive_text"
+                app:boxBackgroundColor="@color/button_background">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/oldNumberInput"
@@ -186,7 +180,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:textSize="16sp"
-                    android:textColor="@color/text_primary"
+                    android:textColor="@color/text_white"
                     android:background="@null" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -197,10 +191,8 @@
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
                 android:hint="@string/old_price_hint"
-                android:textColorHint="@color/text_secondary"
-                app:boxBackgroundColor="@color/surface_dark"
-                app:boxStrokeColor="@color/accent_silver"
-                app:hintTextColor="@color/accent_silver">
+                android:textColorHint="@color/tax_exclusive_text"
+                app:boxBackgroundColor="@color/button_background">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/oldPriceInput"
@@ -208,7 +200,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
                     android:textSize="16sp"
-                    android:textColor="@color/text_primary"
+                    android:textColor="@color/text_white"
                     android:background="@null" />
 
             </com.google.android.material.textfield.TextInputLayout>

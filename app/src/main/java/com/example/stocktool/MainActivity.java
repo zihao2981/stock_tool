@@ -37,5 +37,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        // 找到自动补仓计算器卡片
+        CardView autoAveragingCostCard = findViewById(R.id.autoAveragingCostCard);
+        autoAveragingCostCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, com.example.stocktool.AutoAveragingCostActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

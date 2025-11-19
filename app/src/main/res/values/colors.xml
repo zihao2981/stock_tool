@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 基础颜色 -->
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="grey_background">#4C4945</color>
+    <color name="button_background">#656565</color>
+    <color name="text_white">#FFFFFF</color> <!-- 白色字体 -->
+
+
+    <!-- 全局UI颜色 -->
+    <color name="wood_background">#656565</color> <!-- 木质色背景 -->
+
+    <color name="highlight_green">#90EE90</color> <!-- 淡绿色凸显 -->
     
     <!-- 成熟稳重配色方案 -->
-    <color name="primary_dark">#1a1a1a</color>
-    <color name="secondary_dark">#2d2d2d</color>
-    <color name="accent_gold">#d4af37</color>
-    <color name="accent_silver">#c0c0c0</color>
+    <color name="secondary_dark">#4C4945</color>
+    <color name="accent_gold">#2E2205</color>
+    <color name="accent_silver">#BDABAB</color>
     <color name="text_primary">#e0e0e0</color>
-    <color name="text_secondary">#b0b0b0</color>
-    <color name="background_dark">#121212</color>
-    <color name="surface_dark">#1e1e1e</color>
-    <color name="result_gold">#d4af37</color>
-    <color name="result_silver">#a8a8a8</color>
-    <color name="result_bronze">#cd7f32</color>
+    <color name="text_secondary">#FBFBFB</color>
+    <color name="surface_dark">#856602</color>
+    
+    <!-- 补仓计算器特定颜色 -->
+    <color name="tax_exclusive_text">#ff9800</color> <!-- 税前价格文本颜色 -->
+    <color name="tax_exclusive_background">#fff8e1</color> <!-- 税前价格背景颜色 -->
+    <color name="tax_inclusive_text">#3498db</color> <!-- 税后价格文本颜色 -->
+    <color name="tax_inclusive_background">#e8f4fc</color> <!-- 税后价格背景颜色 -->
 </resources>

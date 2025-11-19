@@ -3,8 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/layout/activity_averaging_cost.xml" value="0.13670886075949368" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1778115501519757" />
+        <entry key="app/src/main/res/layout/activity_auto_averaging_cost.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_averaging_cost.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
       </map>
     </option>
   </component>
