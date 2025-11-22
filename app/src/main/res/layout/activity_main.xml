@@ -108,7 +108,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="自动补仓计算器"
+                        android:text="自动计算器"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_white"
@@ -127,51 +127,51 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- 预留位置给新功能 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="@color/button_background">
+<!--            &lt;!&ndash; 预留位置给新功能 &ndash;&gt;-->
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_columnWeight="1"-->
+<!--                android:layout_margin="8dp"-->
+<!--                app:cardCornerRadius="12dp"-->
+<!--                app:cardElevation="4dp"-->
+<!--                app:cardBackgroundColor="@color/button_background">-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp"
-                    android:gravity="center">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:padding="20dp"-->
+<!--                    android:gravity="center">-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🔄"
-                        android:textSize="32sp"
-                        android:layout_marginBottom="12dp" />
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="🔄"-->
+<!--                        android:textSize="32sp"-->
+<!--                        android:layout_marginBottom="12dp" />-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="即将推出"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_secondary"
-                        android:gravity="center"
-                        android:layout_marginBottom="8dp" />
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="即将推出"-->
+<!--                        android:textSize="16sp"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textColor="@color/text_secondary"-->
+<!--                        android:gravity="center"-->
+<!--                        android:layout_marginBottom="8dp" />-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="更多功能正在开发中"
-                        android:textSize="12sp"
-                        android:textColor="@color/text_secondary"
-                        android:gravity="center" />
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="更多功能正在开发中"-->
+<!--                        android:textSize="12sp"-->
+<!--                        android:textColor="@color/text_secondary"-->
+<!--                        android:gravity="center" />-->
 
-                </LinearLayout>
+<!--                </LinearLayout>-->
 
-            </androidx.cardview.widget.CardView>
+<!--            </androidx.cardview.widget.CardView>-->
 
         </GridLayout>
 

@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">股票补仓成本计算器</string>
+    <string name="app_name">成本计算器</string>
     <string name="old_number_hint">持股数量</string>
     <string name="old_price_hint">持股价格</string>
     <string name="new_number_hint">新购股数量</string>
     <string name="new_price_hint">新购股价格</string>
     <string name="calculate_button">计算成本</string>
     <string name="tax_exclusive_label">不含佣</string>
-    <string name="tax_inclusive_label">含佣成本</string>
+    <string name="tax_inclusive_label">含佣</string>
     <string name="new_total_exclusive_label">新增总价（不含佣金）</string>
     <string name="result_prefix">计算结果</string>
     <string name="empty_input_error">请输入所有必填项</string>

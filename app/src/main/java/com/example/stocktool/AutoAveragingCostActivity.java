@@ -2,10 +2,12 @@ package com.example.stocktool;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -33,6 +35,7 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
 
     private TextInputEditText oldPriceInput, oldQuantityInput;
     private android.widget.LinearLayout pricesContainer;
+    private android.widget.HorizontalScrollView pricesScroll;
     private android.widget.Button addPriceButton;
     private java.util.List<EditText> newPrices = new java.util.ArrayList<>();
     private TextInputEditText startQuantityInput, endQuantityInput, intervalInput;
@@ -71,6 +74,7 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
         
         // 初始化动态价格列表组件
         pricesContainer = findViewById(R.id.pricesContainer);
+        pricesScroll = findViewById(R.id.pricesScroll);
         addPriceButton = findViewById(R.id.addPriceButton);
         
         // 初始化数量范围输入框
@@ -252,14 +256,20 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
                 TextView quantityText = new TextView(this);
                 quantityText.setText(String.valueOf(quantity));
                 quantityText.setPadding(8, 8, 8, 8);
+                quantityText.setGravity(android.view.Gravity.CENTER);
                 // 设置最小宽度确保可见
                 quantityText.setMinimumWidth(80);
                 // 设置字体颜色为白色
                 quantityText.setTextColor(ContextCompat.getColor(this, R.color.text_white));
+                TableRow.LayoutParams quantityParams = new TableRow.LayoutParams(
+                        TableRow.LayoutParams.WRAP_CONTENT, // 宽度自适应
+                        TableRow.LayoutParams.MATCH_PARENT); // 高度填满行高
+                quantityText.setLayoutParams(quantityParams); // 应用布局参数
+
                 // 添加内边距以增强边框效果
                 android.graphics.drawable.GradientDrawable quantityBackground = new android.graphics.drawable.GradientDrawable();
                 quantityBackground.setColor(ContextCompat.getColor(this, R.color.table_cell_background));
-                // quantityBackground.setStroke(2, ContextCompat.getColor(this, R.color.table_border)); // 移除边框宽度和颜色
+                 quantityBackground.setStroke(2, ContextCompat.getColor(this, R.color.table_border)); // 移除边框宽度和颜色
                 quantityBackground.setCornerRadius(4f); // 保留圆角
                 quantityText.setBackground(quantityBackground);
                 row.addView(quantityText);
@@ -271,21 +281,28 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
                     
                     // 更新总数量和总价值
                     int currentTotalQuantity = totalQuantity + quantity;
-                    double currentTotalValue = oldTotalValue + newTotalValue;
-                    
                     // 计算不含佣金的平均成本
-                    double avgCostWithoutCommission = currentTotalValue / currentTotalQuantity;
-                    if(currentTotalValue > 50000){
-                        currentTotalValue += currentTotalValue * 1.0005 ;
+                    double avgCostWithoutCommission = (oldTotalValue + newTotalValue) / currentTotalQuantity;
+
+                    if(newTotalValue > 50000){
+                        newTotalValue = newTotalValue * 1.0005 ;
                     }else {
-                        currentTotalValue += 5;
+                        newTotalValue += 5;
                     }
-                    double avgCostWithCommission = currentTotalValue / currentTotalQuantity;
+
+                    double avgCostWithCommission = (oldTotalValue + newTotalValue) / currentTotalQuantity;
                     
                     // 创建包含两个结果的垂直线性布局
                     android.widget.LinearLayout cellLayout = new android.widget.LinearLayout(this);
                     cellLayout.setOrientation(android.widget.LinearLayout.VERTICAL);
                     cellLayout.setPadding(8, 8, 8, 8);
+                    cellLayout.setGravity(Gravity.CENTER); // 内部文字居中
+
+                    // 给价格列的LinearLayout设置布局参数：高度match_parent（填满行高）
+                    TableRow.LayoutParams cellParams = new TableRow.LayoutParams(
+                            TableRow.LayoutParams.WRAP_CONTENT,
+                            TableRow.LayoutParams.MATCH_PARENT);
+                    cellLayout.setLayoutParams(cellParams);
                     // 为单元格添加背景（移除边框）
                     android.graphics.drawable.GradientDrawable cellBackground = new android.graphics.drawable.GradientDrawable();
                     // 检查计算结果是否有效
@@ -297,7 +314,7 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
                         // 否则使用默认背景
                         cellBackground.setColor(ContextCompat.getColor(this, R.color.table_cell_background));
                     }
-                    // cellBackground.setStroke(2, ContextCompat.getColor(this, R.color.table_border)); // 移除边框宽度和颜色
+                    cellBackground.setStroke(2, ContextCompat.getColor(this, R.color.table_border)); // 移除边框宽度和颜色
                     cellBackground.setCornerRadius(4f); // 保留圆角
                     cellLayout.setBackground(cellBackground);
                     
@@ -329,7 +346,10 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
             
             // 更新表格高亮状态
             updateTableHighlight();
-            
+
+            LinearLayout resultLayout = findViewById(R.id.resultLayout);
+            resultLayout.setVisibility(View.VISIBLE);
+
             // 保存数据到 SharedPreferences
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(KEY_OLD_PRICE, oldPriceStr);
@@ -349,15 +369,15 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
         
         // 更新按钮文本
         if (isWithoutCommissionHighlighted) {
-            btnHighlightWithoutCommission.setText("凸显不含佣价格");
+            btnHighlightWithoutCommission.setText("不含佣价格");
         } else {
-            btnHighlightWithoutCommission.setText("凸显不含佣价格");
+            btnHighlightWithoutCommission.setText("不含佣价格");
         }
         
         // 如果启用了不含佣金高亮，则禁用含佣金高亮
         if (isWithoutCommissionHighlighted && isWithCommissionHighlighted) {
             isWithCommissionHighlighted = false;
-            btnHighlightWithCommission.setText("凸显含佣价格");
+            btnHighlightWithCommission.setText("含佣价格");
         }
         
         // 更新表格显示
@@ -369,15 +389,15 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
         
         // 更新按钮文本
         if (isWithCommissionHighlighted) {
-            btnHighlightWithCommission.setText("凸显含佣价格");
+            btnHighlightWithCommission.setText("含佣价格");
         } else {
-            btnHighlightWithCommission.setText("凸显含佣价格");
+            btnHighlightWithCommission.setText("含佣价格");
         }
         
         // 如果启用了含佣金高亮，则禁用不含佣金高亮
         if (isWithCommissionHighlighted && isWithoutCommissionHighlighted) {
             isWithoutCommissionHighlighted = false;
-            btnHighlightWithoutCommission.setText("凸显不含佣价格");
+            btnHighlightWithoutCommission.setText("不含佣价格");
         }
         
         // 更新表格显示
@@ -430,18 +450,20 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-        layout.setPadding(0, 8, 0, 8);
+        layout.setPadding(8, 0, 0, 2);
         
         // 直接创建EditText而不是TextInputLayout
         EditText editText = new EditText(this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
-        params.setMargins(0, 0, 16, 0);
+        params.setMargins(3, 0, 3, 0);
         editText.setLayoutParams(params);
+        editText.setGravity(Gravity.CENTER);
         editText.setTextColor(ContextCompat.getColor(this, R.color.text_white));
         editText.setHintTextColor(ContextCompat.getColor(this, R.color.text_white));
         editText.setHint("新购价格 " + (newPrices.size() + 1));
+        editText.setTextSize(14);
         editText.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
         
         // 将EditText添加到水平线性布局
@@ -452,6 +474,17 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
         
         // 将新的输入框添加到列表中
         newPrices.add(editText);
+        
+        // 延迟执行滚动和聚焦操作，确保UI更新完成
+        pricesContainer.post(new Runnable() {
+            @Override
+            public void run() {
+                // 滚动到最右侧
+                pricesScroll.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+                // 聚焦到最后一个输入框
+                editText.requestFocus();
+            }
+        });
     }
     
     private void createCombinedCartesianTableHeader(List<Double> prices) {
@@ -459,33 +492,15 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
         TableRow titleRow = new TableRow(this);
         
         // 移除TableRow的边框
-        // titleRow.setBackgroundColor(ContextCompat.getColor(this, R.color.table_border));
+         titleRow.setBackgroundColor(ContextCompat.getColor(this, R.color.table_border));
         
         // 设置TableRow的布局参数
         TableRow.LayoutParams rowParams = new TableRow.LayoutParams(
             TableRow.LayoutParams.MATCH_PARENT,
             TableRow.LayoutParams.WRAP_CONTENT);
         // 移除外边距以去除边框效果
-        // rowParams.setMargins(2, 2, 2, 2);
+         rowParams.setMargins(2, 2, 2, 2);
         titleRow.setLayoutParams(rowParams);
-        
-        TextView titleText = new TextView(this);
-        titleText.setText("计算结果");
-        titleText.setTextSize(18);
-        titleText.setTextColor(ContextCompat.getColor(this, R.color.text_white));
-        titleText.setPadding(16, 16, 16, 16);
-        // 移除标题文本的边框效果
-        android.graphics.drawable.GradientDrawable titleBackground = new android.graphics.drawable.GradientDrawable();
-        titleBackground.setColor(ContextCompat.getColor(this, R.color.table_cell_background));
-        // titleBackground.setStroke(2, ContextCompat.getColor(this, R.color.table_border)); // 移除边框宽度和颜色
-        titleBackground.setCornerRadius(4f); // 保留圆角
-        titleText.setBackground(titleBackground);
-        titleRow.addView(titleText);
-        
-        // 占满整行
-        TableRow.LayoutParams params = (TableRow.LayoutParams) titleText.getLayoutParams();
-        params.span = prices.size() + 3; // 数量列 + 所有价格列
-        titleText.setLayoutParams(params);
         
         resultTableCombined.addView(titleRow);
         
@@ -516,7 +531,7 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
         // 为数量列标题添加背景以创建边框效果
         android.graphics.drawable.GradientDrawable quantityHeaderBackground = new android.graphics.drawable.GradientDrawable();
         quantityHeaderBackground.setColor(ContextCompat.getColor(this, R.color.table_cell_background));
-        // quantityHeaderBackground.setStroke(2, ContextCompat.getColor(this, R.color.table_border)); // 移除边框宽度和颜色
+        quantityHeaderBackground.setStroke(2, ContextCompat.getColor(this, R.color.table_border)); // 移除边框宽度和颜色
         quantityHeaderBackground.setCornerRadius(4f); // 保留圆角
         quantityHeader.setBackground(quantityHeaderBackground);
         headerRow.addView(quantityHeader);
@@ -537,7 +552,7 @@ public class AutoAveragingCostActivity extends AppCompatActivity {
             // 为价格列标题添加背景以创建边框效果
             android.graphics.drawable.GradientDrawable priceHeaderBackground = new android.graphics.drawable.GradientDrawable();
             priceHeaderBackground.setColor(ContextCompat.getColor(this, R.color.table_cell_background));
-            // priceHeaderBackground.setStroke(2, ContextCompat.getColor(this, R.color.table_border)); // 移除边框宽度和颜色
+            priceHeaderBackground.setStroke(2, ContextCompat.getColor(this, R.color.table_border)); // 移除边框宽度和颜色
             priceHeaderBackground.setCornerRadius(4f); // 保留圆角
             priceHeader.setBackground(priceHeaderBackground);
             headerRow.addView(priceHeader);
